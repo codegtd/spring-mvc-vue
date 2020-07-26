@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" v="5.2" rws="_15492386093997" Pws="_15492386093997" cws="_15492386093997" persistenceUnitName="DEFAULT_PU" sm="false" xs="false" id="_154752828946790" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:entity compositePrimaryKeyClass="UsersPK" abs="false" class="Users" v="true" xre="false" m="false" rootElement="_154752828946790" id="_154752828990491">
+        <jpa:ext e="true" n="org.springframework.hateoas.ResourceSupport"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" am="PRIVATE" name="name" jbt="false" id="_154752829026393">
+                <jpa:column name="name" unique="false" nullable="true" insertable="true" updatable="true" length="30"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" am="PRIVATE" name="password" jbt="false" id="_154752829035694">
+                <jpa:column name="pass" unique="false" nullable="true" insertable="true" updatable="true" length="30"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_154752829071596" v="true" am="PRIVATE" name="profile" jbt="false" id="_154752829046695">
+                <jpa:cascade/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Integer" v="true" am="PRIVATE" name="iduser" jbt="false" id="_154752828995192">
+                <jpa:generated-value strategy="DEFAULT" generator="seq_user"/>
+                <jpa:sequence-generator name="seq_user" sequence-name="seq_user"/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity compositePrimaryKeyClass="ProfilePK" abs="false" class="Profile" v="true" xre="false" m="false" rootElement="_154752828946790" id="_154752829071596">
+        <jpa:ext e="true" n="org.springframework.hateoas.ResourceSupport"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" am="PRIVATE" name="descript" jbt="false" id="_154752829082498">
+                <jpa:column name="descr" unique="false" nullable="true" insertable="true" updatable="true" length="20"/>
+            </jpa:basic>
+            <jpa:id attribute-type="Integer" v="true" am="PRIVATE" name="idprof" jbt="false" id="_154752829071597">
+                <jpa:generated-value strategy="DEFAULT" generator="seq_prof"/>
+                <jpa:sequence-generator name="seq_prof" sequence-name="seq_prof"/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:wsl>
+        <jpa:ws n="Main" id="_15492386093997">
+            <i ref="_154752829071596" x="366" y="223"/>
+            <i ref="_154752828990491" x="170" y="223"/>
+        </jpa:ws>
+    </jpa:wsl>
+</jpa:entity-mappings>

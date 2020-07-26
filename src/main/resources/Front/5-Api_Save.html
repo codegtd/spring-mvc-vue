@@ -1,0 +1,118 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+</head>
+
+<body>
+    
+    <div id="VueManagesThisDOMportion">
+        <form>
+            
+            <label>Name:</label>
+            <input v-model="userToSave.name" type="text"/>
+            <label>testing:  {{userToSave.name}}</label></br>
+            
+            <label>password</label>
+            <input v-model="userToSave.password" type="password"/>
+            <label>testing:  {{userToSave.password}}</label></br>
+            
+            
+            
+            <input type="button" value="Save" v-on:click="saveMethod"/>
+        </form>
+        
+        
+        <p v-if="seen"> List Users Table </p>
+        
+        <ol>
+            <a v-for="(itemFor, index) in listArrayUsers" v-if="index === 'content'">
+                
+                <input type="hidden" v-model="individualItem = itemFor">
+                
+                <li v-for="it in individualItem">
+                    {{it.idUser}} | 
+                    {{it.name}} | 
+                    {{it.password}} | 
+                    <span v-for ="(linkItem, index) in it.links">
+                        {{linkItem.rel}} |
+                        {{linkItem.href}}
+                    </span>
+                </li>
+            </a>
+        </ol>
+        
+    </div>
+    
+    <script>
+        var appInst = new Vue({
+            
+            el:"#VueManagesThisDOMportion",
+            
+            data:{
+                //boolean type
+                seen: true,
+                
+                //array types
+                listArrayUsers:[],
+                individualItem: [],
+                
+                //Object type
+                userToSave:{
+                    name: '', 
+                    password:''
+                }
+                
+            },
+            
+            //created: Method executed when the Vue instance(appInst) is created 
+            created: function() {
+                this.$http.get('http://localhost:8083/v1/usuarios').then(
+                response => {  // get body data
+                    
+                    this.listArrayUsers = response.body;
+                }, 
+                response => {  // error callback
+                    alert("it does not work! get") 
+                });
+            },
+            
+            //group of methods 
+            methods:{
+                
+                                                 
+                listAllMethod: function() {
+                    this.$http.get('http://localhost:8083/v1/usuarios').then(
+                    response => {  // get body data
+                        
+                        this.listArrayUsers = response.body;
+                    }, 
+                    response => {  // error callback
+                        alert("it does not work! get") 
+                    });
+
+                    
+                }, 
+                
+                saveMethod: function(){
+                    this.$http.post('http://localhost:8083/v1/usuarios', this.userToSave).then(
+                    response => {  // posting body data
+                        this.listAllMethod();
+                        this.userToSave.name = '';
+                        this.userToSave.password = '';
+                    }, 
+                    response => {  // error callback
+                        alert("it does not work! post") 
+                    }); 
+                                       
+                }
+                
+            }
+            
+        });
+    </script>
+    
+</body>
+
+</html>

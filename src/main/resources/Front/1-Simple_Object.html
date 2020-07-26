@@ -1,0 +1,47 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+</head>
+
+<body>
+    
+    <div id="jsonObjeto">
+        <p v-if="seen"> User information </p>
+        1: simple object
+        {{ usuario.iduser }}
+        {{ usuario.name }}
+        {{ usuario.password }}
+        {{ usuario.links.rel }}
+        {{ usuario.links.href }} 
+        
+        
+    </div>
+    
+    <script>
+        var appInst = new Vue({
+            
+            el:"#jsonObjeto",
+            
+            data:{
+                seen: false,
+                
+                usuario :{
+                    iduser: "1",
+                    name:"paulo",
+                    password:"123",
+                    links:{
+                        rel:"yyy",
+                        href:"xxx/xxx/xxx"
+                    }
+                } 
+                
+            }
+            
+        });
+    </script>
+    
+</body>
+
+</html>

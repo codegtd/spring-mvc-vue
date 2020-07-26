@@ -1,0 +1,191 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+</head>
+
+<body>
+    
+    <div id="VueManagesThisDOMportion">
+        <form>
+            
+            <label>Name:</label>
+            <input v-model="userToSave.name" type="text"/>
+            <label>testing:  {{userToSave.name}}</label></br>
+            
+            <label>password</label>
+            <input v-model="userToSave.password" type="password"/>
+            <label>testing:  {{userToSave.password}}</label></br>
+            
+            <select v-model="userToSave.profile">
+                <option disabled>Select profile</option>
+                <option v-for="item in profilesToSelect" v-bind:value="item">
+                    {{ item.descript }}
+                </option>
+            </select>
+            
+            <input type="button" value="Save" v-on:click="saveUpdateMethod"/>
+            
+            <input type="button" value="New" v-on:click="newCleanObjectUser"/>
+            
+        </form>
+        
+        
+        <p v-if="seen"> List Users Table </p>
+        
+        <ol>
+            <a v-for="(itemFor, index) in listArrayUsers" v-if="index === 'content'">
+                
+                <input type="hidden" v-model="individualItem = itemFor">
+                
+                <li v-for="it in individualItem">
+                    {{it.idUser}} | 
+                    {{it.name}} | 
+                    {{it.password}} | 
+                    {{it.profile.descript}} |
+                    <span v-for ="(linkItem, index) in it.links">
+                        {{linkItem.rel}} |
+                        {{linkItem.href}}
+                    </span>
+                    
+                    <button type="button" v-on:click="deleteMethod(it)">Delete</button>
+                    
+                    <button type="button" v-on:click="showInputValuesToUpdate(it)">Update</button>
+                    
+                </li>
+            </a>
+        </ol>
+        
+    </div>
+    
+    <script>
+        var appInst = new Vue({
+            
+            el:"#VueManagesThisDOMportion",
+            
+            data:{
+                //boolean type
+                seen: true,
+                
+                //array types
+                listArrayUsers:[],
+                individualItem: [],
+                profilesToSelect: [],
+                
+                //Object type
+                userToSave:{
+                    iduser:'',
+                    name: '', 
+                    password:'',
+                    profile:''
+                }
+                
+            },
+            
+            //created: Method executed when the Vue instance(appInst) is created 
+            created: function() {
+                
+                //------show users in the creation of the page (loadPage)
+                this.$http.get('http://localhost:8083/v1/usuarios').then(
+                response => {  // get body data
+                    this.listArrayUsers = response.body;
+                }, 
+                response => {  // error callback
+                    alert("it does not work! get") 
+                });
+                
+
+                //------show profiles in the creation of the page (loadPage)
+                this.$http.get('http://localhost:8083/v1/usuarios/profile').then(
+                response => {  // get body data                   
+                    this.profilesToSelect = response.body;
+                }, 
+                response => {  // error callback
+                    alert("it does not work! get profiles") 
+                });
+            },
+            
+            //group of methods 
+            methods:{
+                
+                listAllMethod: function() {
+                    this.$http.get('http://localhost:8083/v1/usuarios').then(
+                    response => {  // get body data
+                        
+                        this.listArrayUsers = response.body;
+                    }, 
+                    response => {  // error callback
+                        alert("it does not work! get") 
+                    });
+                },  
+                
+                saveUpdateMethod: function(){
+                    
+                    if(this.userToSave.iduser == '' && this.userToSave.profile != ''){ 
+                        this.$http.post('http://localhost:8083/v1/usuarios', this.userToSave).then(
+                        response => {  // posting body data
+                            this.listAllMethod();
+                            this.newCleanObjectUser();
+                            
+                        }, 
+                        response => {  // error callback
+                            alert("it does not work! post") 
+                        }); 
+                        
+                    }else if(this.userToSave.iduser != '' && this.userToSave.profile != ''){
+                        
+                        this.$http.put('http://localhost:8083/v1/usuarios', this.userToSave).then(
+                        response => {  // posting body data
+                            this.listAllMethod();
+                            this.newCleanObjectUser();
+                            
+                        }, 
+                        response => {  // error callback
+                            alert("it does not work! put") 
+                        }); 
+                    }else{
+                        alert("All fields should be fill up")
+                    }
+                },
+                
+                showInputValuesToUpdate: function(itemToShowValues){
+                    
+                    this.newCleanObjectUser();
+                    
+                    this.userToSave.iduser = itemToShowValues.iduser;
+                    this.userToSave.name = itemToShowValues.name;
+                    this.userToSave.password = itemToShowValues.password;
+                    this.userToSave.profile = itemToShowValues.profile;
+                    
+                },
+                
+                newCleanObjectUser: function(){
+                    this.userToSave.iduser = ''; 
+                    this.userToSave.name = '';
+                    this.userToSave.password = '';
+                    this.userToSave.profile = '';
+                },
+                
+                deleteMethod: function(deleteItem){ 
+                    
+                    if(confirm("Confirm the deletion of the item "+ deleteItem.iduser)){ 
+                        
+                        this.$http.delete('http://localhost:8083/v1/usuarios/' + deleteItem.iduser).then(
+                        response => {  // posting body data
+                            this.listAllMethod();
+                            
+                        }, 
+                        response => {  // error callback
+                            alert("it does not work! delete") 
+                        });  
+                    } 
+                },                
+            }
+            
+        });
+    </script>
+    
+</body>
+
+</html>

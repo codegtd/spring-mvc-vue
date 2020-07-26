@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+</head>
+
+<body>
+    
+    <div id="jsonObjeto">
+        <p v-if="seen"> User information </p>
+        
+        <ol>
+            <li v-for="(itemFor, index) in usersGotFromAPI" v-if="index === 'content'">
+            
+                <input type="hidden" v-model="vetorItem = itemFor">
+                
+                <li v-for="it in vetorItem">
+                    {{it.idUser}} | 
+                    {{it.name}} | 
+                    {{it.password}} | 
+                    {{it.profile.descript}} | 
+                    <span v-for ="(linkItem, index) in it.links">
+                        {{linkItem.rel}} | 
+                        {{linkItem.href}}
+                    </span>
+                </li>
+            </li>
+        </ol>
+        
+    </div>
+    
+    <script>
+        var appInst = new Vue({
+            
+            el:"#jsonObjeto",
+            
+            data:{
+                seen: false,
+                
+                usersGotFromAPI:[],
+
+                vetorItem: []
+                
+            },
+            //created: Execute the function when created the Vue instance(appInst)
+            created: function() {
+                this.$http.get('http://localhost:8083/v1/usuarios').then(
+                response => {  // get body data
+                    
+                    this.usersGotFromAPI = response.body;
+                }, 
+                response => {  // error callback
+                    alert("it does not work!") 
+                });
+            } 
+            
+        });
+    </script>
+    
+</body>
+
+</html>

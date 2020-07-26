@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  web7-mysql:
+    image: mysql:5.7
+    container_name: web7-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=web7db
+    volumes:
+      - web7db:/var/lib/mysql
+    networks:
+      - web7
+
+  web7-web:
+    image: maven:3.5-jdk-8
+    container_name: web7-web
+    working_dir: /app
+    ports:
+      - "8083:8083"
+    depends_on:
+      - web7-mysql
+    volumes:
+      - ".:/app"
+      - "~/.m2:/root/.m2"
+    command: mvn clean spring-boot:run
+
+    networks:
+      - web7
+
+networks:
+   web7:
+
+volumes:
+   web7db:
+

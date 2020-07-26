@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" v="5.2" rws="_15492385854131" Pws="_15492385854131" cws="_15492385854131" persistenceUnitName="DEFAULT_PU" sm="false" xs="false" id="_1547528329668105" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:entity compositePrimaryKeyClass="ProfilePK" abs="false" class="Profile" v="true" xre="false" m="false" rootElement="_1547528329668105" id="_1547528329668106">
+        <jpa:attributes>
+            <jpa:basic optional="true" attribute-type="String" v="true" name="descr" id="_1547528329668109">
+                <jpa:column name="descr" unique="false" nullable="true" insertable="true" updatable="true" table="profile" length="20"/>
+            </jpa:basic>
+            <jpa:one-to-many own="false" collection-type="java.util.List" connected-entity-id="_1547528329668107" connected-attribute-id="_1547528329668114" v="true" name="usersCollection" id="_1547528329668110"/>
+            <jpa:id attribute-type="Integer" v="true" name="idprof" id="_1547528329668108">
+                <jpa:column name="idprof" unique="false" nullable="false" insertable="true" updatable="true" table="profile"/>
+                <jpa:generated-value strategy="DEFAULT"/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:table name="profile"/>
+    </jpa:entity>
+    <jpa:entity compositePrimaryKeyClass="UsersPK" abs="false" class="Users" v="true" xre="false" m="false" rootElement="_1547528329668105" id="_1547528329668107">
+        <jpa:attributes>
+            <jpa:basic optional="true" attribute-type="String" v="true" name="name" id="_1547528329668112">
+                <jpa:column name="name" unique="false" nullable="true" insertable="true" updatable="true" table="users" length="30"/>
+            </jpa:basic>
+            <jpa:basic optional="true" attribute-type="String" v="true" name="pass" id="_1547528329668113">
+                <jpa:column name="pass" unique="false" nullable="true" insertable="true" updatable="true" table="users" length="30"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1547528329668106" connected-attribute-id="_1547528329668110" v="true" name="profileIdprof" id="_1547528329668114">
+                <jpa:join-column name="PROFILE_IDPROF" rc="IDPROF" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Integer" v="true" name="iduser" id="_1547528329668111">
+                <jpa:column name="iduser" unique="false" nullable="false" insertable="true" updatable="true" table="users"/>
+                <jpa:generated-value strategy="DEFAULT"/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:table name="users"/>
+    </jpa:entity>
+    <jpa:wsl>
+        <jpa:ws n="Main" id="_15492385854131">
+            <i ref="_1547528329668106" x="410" y="101"/>
+            <i ref="_1547528329668107" x="179" y="81"/>
+        </jpa:ws>
+    </jpa:wsl>
+</jpa:entity-mappings>

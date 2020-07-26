@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+</head>
+
+<body>
+    
+    <div id="VueManagesThisDOMportion">
+        <form>
+            <label>idUser</label>
+            <input v-model="userFromForm.idUser" type="text" />
+            <label>testing: {{userFromForm.idUser}} </label></br>
+
+            <label>Name:</label>
+            <input v-model="userFromForm.name" type="text" />
+            <label>testing:  {{userFromForm.name}}</label></br>
+
+            <label>password</label>
+            <input v-model="userFromForm.password" type="password" />
+            <label>testing:  {{userFromForm.password}}</label></br>
+
+            <input type="button" value="Save"></input>
+        </form>
+
+        
+        <p v-if="seen"> List Users Table </p>
+        
+        <ol>
+            <a v-for="(itemFor, index) in usersGotFromAPI" v-if="index === 'content'">
+            
+                <input type="hidden" v-model="vetorItem = itemFor">
+                
+                <li v-for="it in vetorItem">
+                    {{it.idUser}} | 
+                    {{it.name}} | 
+                    {{it.password}} | 
+                    <span v-for ="(linkItem, index) in it.links">
+                        <!-- {{linkItem.rel}} |  -->
+                        {{linkItem.href}}
+                    </span>
+                </li>
+            </a>
+        </ol>
+        
+    </div>
+    
+    <script>
+        var appInst = new Vue({
+            
+            el:"#VueManagesThisDOMportion",
+            
+            data:{
+                //boolean type
+                seen: true,
+                
+                //array types
+                usersGotFromAPI:[],
+                vetorItem: [],
+
+                //Object type
+                userFromForm:{}
+                
+            },
+            
+            //created: Execute the function when created the Vue instance(appInst)
+            created: function() {
+                this.$http.get('http://localhost:8083/v1/usuarios').then(
+                response => {  // get body data
+                    
+                    this.usersGotFromAPI = response.body;
+                }, 
+                response => {  // error callback
+                    alert("it does not work!") 
+                });
+            } 
+            
+        });
+    </script>
+    
+</body>
+
+</html>
