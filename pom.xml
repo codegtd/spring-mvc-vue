@@ -20,7 +20,7 @@
     
     <name>web7</name>
     
-    <description>REvisao do backend</description>
+    <description>Revisao do backend</description>
 
     <properties>
         <java.version>1.8</java.version>
